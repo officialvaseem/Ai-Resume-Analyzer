@@ -63,7 +63,9 @@
       async function loadHistory() {
         const container = document.getElementById("historyContainer");
         try {
-          const response = await fetch("http://127.0.0.1:8000/history");
+          const response = await fetch(
+            "https://ai-resume-analyzer-chvn.onrender.com/history",
+          );
           allRecords = await response.json();
           visibleCount = 5;
           renderTable();
@@ -130,7 +132,9 @@
           return;
         }
         try {
-          await fetch("http://127.0.0.1:8000/history", { method: "DELETE" });
+          await fetch("https://ai-resume-analyzer-chvn.onrender.com/history", {
+            method: "DELETE",
+          });
           loadHistory();
         } catch (error) {
           alert("Error clearing history: " + error.message);

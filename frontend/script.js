@@ -18,10 +18,13 @@ async function analyzeResume() {
   formData.append("job_description", jobDescription);
 
   try {
-    const response = await fetch("http://127.0.0.1:8000/analyze", {
-      method: "POST",
-      body: formData,
-    });
+    const response = await fetch(
+      "https://ai-resume-analyzer-chvn.onrender.com/analyze",
+      {
+        method: "POST",
+        body: formData,
+      },
+    );
     const data = await response.json();
 
     const score = data.match_score_percent;
