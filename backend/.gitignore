@@ -1,0 +1,10 @@
+#Virtual Environment
+backend/venv/
+backend/__pycache__/
+
+#Database
+backend/resume_analyzer.db
+
+#OS files
+.DS_Store
+Thumbs.db

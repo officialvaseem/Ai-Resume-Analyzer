@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>AI Resume Analyzer</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>📄 AI Resume Analyzer</h1>
+      <a
+        href="history.html"
+        style="font-size: 13px; color: #4361ee; text-decoration: none"
+        >View Analysis History -></a
+      >
+
+      <label>Upload Resume (PDF)</label>
+      <input type="file" id="resumeFile" accept=".pdf" />
+
+      <label>Paste Job Description</label>
+      <textarea
+        id="jobDescription"
+        placeholder="Paste the job description here..."
+      ></textarea>
+
+      <button type="button" id="analyzeBtn" onclick="analyzeResume()">
+        Analyze Resume
+      </button>
+
+      <div id="result"></div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

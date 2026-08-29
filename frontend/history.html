@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Analysis History</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        font-size: 13px;
+      }
+      th {
+        color: #666;
+        font-weight: 600;
+      }
+      .back-link {
+        display: inline-block;
+        margin-bottom: 15px;
+        color: #4361ee;
+        text-decoration: none;
+        font-size: 14px;
+      }
+      .back-link:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" style="max-width: 900px">
+      <a href="index.html" class="back-link">← Back to Analyzer</a>
+      <h1>📊 Analysis History</h1>
+      <button
+        id="clearBtn"
+        onclick="clearHistory()"
+        style="
+          background: #e74c3c;
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 13px;
+          margin-bottom: 10px;
+        "
+      >
+        Clear History
+      </button>
+      <div id="historyContainer">Loading...</div>
+    </div>
+
+    <script>
+      let allRecords = [];
+      let visibleCount = 5;
+
+      async function loadHistory() {
+        const container = document.getElementById("historyContainer");
+        try {
+          const response = await fetch("http://127.0.0.1:8000/history");
+          allRecords = await response.json();
+          visibleCount = 5;
+          renderTable();
+        } catch (error) {
+          container.innerHTML = `<p style="color:#b3261e;">Error loading history: ${error.message}</p>`;
+        }
+      }
+
+      function renderTable() {
+        const container = document.getElementById("historyContainer");
+
+        if (allRecords.length === 0) {
+          container.innerHTML = "<p>No analyses yet. Go analyze a resume!</p>";
+          return;
+        }
+
+        const visibleRecords = allRecords.slice(0, visibleCount);
+
+        let rows = visibleRecords
+          .map(
+            (item) => `
+    <tr>
+      <td>${item.filename}</td>
+      <td><strong>${item.match_score_percent}%</strong></td>
+      <td>${item.matched_skills || "—"}</td>
+      <td>${item.missing_skills || "—"}</td>
+      <td>${new Date(item.created_at).toLocaleString()}</td>
+    </tr>
+  `,
+          )
+          .join("");
+
+        const loadMoreBtn =
+          visibleCount < allRecords.length
+            ? `<button onclick="loadMore()" style="margin-top:12px; background:#4361ee; color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-size:13px;">Load More</button>`
+            : `<p style="color:#888; font-size:13px; margin-top:10px;">Showing all ${allRecords.length} records</p>`;
+
+        container.innerHTML = `
+    <table>
+      <tr>
+        <th>Resume</th>
+        <th>Score</th>
+        <th>Matched Skills</th>
+        <th>Missing Skills</th>
+        <th>Date</th>
+      </tr>
+      ${rows}
+    </table>
+    ${loadMoreBtn}
+  `;
+      }
+
+      function loadMore() {
+        visibleCount += 5;
+        renderTable();
+      }
+
+      async function clearHistory() {
+        if (
+          !confirm(
+            "Are you sure you want to delete all analysis history? This cannot be undone.",
+          )
+        ) {
+          return;
+        }
+        try {
+          await fetch("http://127.0.0.1:8000/history", { method: "DELETE" });
+          loadHistory();
+        } catch (error) {
+          alert("Error clearing history: " + error.message);
+        }
+      }
+
+      loadHistory();
+    </script>
+  </body>
+</html>
