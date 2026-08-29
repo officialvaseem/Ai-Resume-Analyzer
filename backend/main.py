@@ -33,6 +33,7 @@ def clear_history():
     db.commit()
     db.close()
     return {"message": "History cleared successfully"}
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
