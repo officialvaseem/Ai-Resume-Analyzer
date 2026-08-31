@@ -1,3 +1,15 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const fileInput = document.getElementById("resumeFile");
+  const fileText = document.getElementById("fileText");
+  if (fileInput) {
+    fileInput.addEventListener("change", () => {
+      if (fileInput.files[0]) {
+        fileText.textContent = fileInput.files[0].name;
+      }
+    });
+  }
+});
+
 async function analyzeResume() {
   const fileInput = document.getElementById("resumeFile");
   const jobDescription = document.getElementById("jobDescription").value;
@@ -28,9 +40,9 @@ async function analyzeResume() {
     const data = await response.json();
 
     const score = data.match_score_percent;
-    let barColor = "#e74c3c";
-    if (score >= 60) barColor = "#2ecc71";
-    else if (score >= 30) barColor = "#f39c12";
+    let barColor = "linear-gradient(90deg, #e74c3c, #ff6b5b)";
+    if (score >= 60) barColor = "linear-gradient(90deg, #2ecc71, #4ade80)";
+    else if (score >= 30) barColor = "linear-gradient(90deg, #f39c12, #fbbf24)";
 
     const matchedTags = data.matched_skills.length
       ? data.matched_skills

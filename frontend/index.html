@@ -15,7 +15,14 @@
       >
 
       <label>Upload Resume (PDF)</label>
-      <input type="file" id="resumeFile" accept=".pdf" />
+      <div class="file-drop">
+        <div class="file-drop-icon">📎</div>
+        <div class="file-drop-text" id="fileText">
+          Click to choose your resume
+        </div>
+        <div class="file-drop-sub">PDF files only</div>
+        <input type="file" id="resumeFile" accept=".pdf" />
+      </div>
 
       <label>Paste Job Description</label>
       <textarea
